@@ -83,6 +83,9 @@ endif
 INCLUDE = -Iinclude
 CFLAGS = $(OPT) $(WARN) $(INCLUDE) $(CFLAGS.EXTRA)
 
+testDir:
+	echo "install path GLEW_PREFIX=$(GLEW_PREFIX) GLEW_DEST=$(GLEW_DEST)"
+
 all debug: glew.lib glew.bin
 
 # GLEW shared and static libraries
@@ -232,12 +235,15 @@ install.bin: glew.bin
 
 install.include:
 	$(INSTALL) -d -m 0755 "$(DESTDIR)$(INCDIR)"
+	echo "install path: $(DESTDIR)$(INCDIR)"
 	$(INSTALL) -m 0644 include/GL/wglew.h "$(DESTDIR)$(INCDIR)/"
 	$(INSTALL) -m 0644 include/GL/glew.h "$(DESTDIR)$(INCDIR)/"
 	$(INSTALL) -m 0644 include/GL/glxew.h "$(DESTDIR)$(INCDIR)/"
 	$(INSTALL) -m 0644 include/GL/eglew.h "$(DESTDIR)$(INCDIR)/"
 
 install.pkgconfig: glew.pc
+	echo "install path: $(DESTDIR)$(INCDIR)"
+
 	$(INSTALL) -d -m 0755 "$(DESTDIR)$(PKGDIR)"
 	$(INSTALL) -d -m 0755 "$(DESTDIR)$(PKGDIR)"
 	$(INSTALL) -m 0644 glew.pc "$(DESTDIR)$(PKGDIR)/"

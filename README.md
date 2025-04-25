@@ -1,3 +1,70 @@
+# 编译说明（中文）
+# 编译配置说明
+## 1、Linux配置
+目录文件是：[config/Makefile.linux-clang-egl](config/Makefile.linux-clang-egl)
+```bash
+LDFLAGS.GL = -lEGL -lGL # for linux desktop
+```
+## 2、arm64配置
+目录文件是：[config/Makefile.linux-clang-egl](config/Makefile.linux-clang-egl)
+```bash
+DFLAGS.GL =-L$NDK/platforms/android-24/arch-arm64/usr/lib -lEGL -lGLESv2 # for arm64
+```
+## 3、build_arm64.sh
+该文件sh脚本时配合给FFmpeg编译时所用到的。
+
+# 编译方式说明
+# 1、make编译方式
+## 使用make命令
+- 1、需要先编译auto目录下的文件
+```bash
+cd auto && make clean && make
+```
+- 2、在根目录下开始编译
+
+Linux EGL
+```bash
+#安装依赖库
+sudo apt install libegl1-mesa-dev
+```
+```bash
+#开始编译
+make clean && make SYSTEM=linux-egl -j12 
+```
+`-j12`是指cpu核心数是12个核心
+## 安装类库到系统里
+```bash
+sudo make install
+```
+### 清理编译的垃圾
+```bash
+make clean
+```
+# 2、cmake编译方式
+
+## 编译前的环境安装，编译工具和依赖库等
+### 安装编译工具
+Debian/Ubuntu/Mint: 
+```bash
+$ sudo apt-get install build-essential libxmu-dev libxi-dev libgl-dev cmake git
+```
+RedHat/CentOS/Fedora: 
+```bash
+$ sudo yum install libXmu-devel libXi-devel libGL-devel cmake git
+```
+### 开始编译
+```bash
+$ cd build
+$ cmake ./cmake
+$ make -j12
+```
+
+:::note 注意
+更多详细配置编译信息，请查看下面的英文介绍，此中文只是简单的概括编译的方式和步骤，不做太详细的介绍翻译。
+:::
+
+
+
 # GLEW - The OpenGL Extension Wrangler Library
 
 The OpenGL Extension Wrangler Library (GLEW) is a cross-platform open-source C/C++ extension loading library. GLEW provides efficient run-time mechanisms for determining which OpenGL extensions are supported on the target platform. OpenGL core and extension functionality is exposed in a single header file. GLEW has been tested on a variety of operating systems, including Windows, Linux, Mac OS X, FreeBSD, Irix, and Solaris.
