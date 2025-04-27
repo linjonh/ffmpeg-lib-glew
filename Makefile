@@ -31,14 +31,18 @@
 include config/version
 
 SHELL = /bin/sh
-SYSTEM ?= $(shell config/config.guess | cut -d - -f 3 | sed -e 's/[0-9\.]//g;')
+ 
+# include config/Makefile.$(SYSTEM)
+#外部设置SYSTEM的config平台，此处config.guess 猜测的对于glew类库不支持  library -lX11 和 library -lGL
+SYSTEM ?= linux-clang-egl #$(shell config/config.guess | cut -d - -f 3 | sed -e 's/[0-9\.]//g;')
 SYSTEM.SUPPORTED = $(shell test -f config/Makefile.$(SYSTEM) && echo 1)
-
 ifeq ($(SYSTEM.SUPPORTED), 1)
 include config/Makefile.$(SYSTEM)
 else
 $(error "Platform '$(SYSTEM)' not supported")
 endif
+#如果不想外部设置，可以在此处写为egl的androi支持的类库
+
 
 GLEW_PREFIX ?= /usr
 GLEW_DEST ?= /usr
@@ -83,7 +87,7 @@ endif
 INCLUDE = -Iinclude
 CFLAGS = $(OPT) $(WARN) $(INCLUDE) $(CFLAGS.EXTRA)
 
-all debug: glew.lib glew.bin
+all debug: glew.lib glew.bin 
 
 # GLEW shared and static libraries
 
@@ -99,12 +103,15 @@ LIB.OBJS           := $(LIB.OBJS:.c=.o)
 LIB.SOBJS          := $(addprefix tmp/$(SYSTEM)/default/shared/,$(LIB.SRCS.NAMES))
 LIB.SOBJS          := $(LIB.SOBJS:.c=.o)
 testDir:
-	echo "install path GLEW_PREFIX=$(GLEW_PREFIX)"
-	echo "GLEW_DEST=$(GLEW_DEST)  "
-	echo "LIB.SHARED.DIR/LIB.SHARED=$(LIB.SHARED.DIR)/$(LIB.SHARED)"
-	echo "LIB.LDFLAGS=$(LIB.LDFLAGS) LDFLAGS.GL= LIB.LIBS=GL_LDFLAGS=$(GL_LDFLAGS)"
-	echo "GLEW_NO_GLU=$(GLEW_NO_GLU)"
-	echo "CC=$(CC)"
+	echo "[" >>config.log
+	echo "install path GLEW_PREFIX=$(GLEW_PREFIX)" >>config.log
+	echo "GLEW_DEST=$(GLEW_DEST)  " >>config.log
+	echo "LIB.SHARED.DIR/LIB.SHARED=$(LIB.SHARED.DIR)/$(LIB.SHARED)" >>config.log
+	echo "LIB.LDFLAGS=$(LIB.LDFLAGS) LDFLAGS.GL= LIB.LIBS=GL_LDFLAGS=$(GL_LDFLAGS)" >>config.log
+	echo "GLEW_NO_GLU=$(GLEW_NO_GLU)" >>config.log
+	echo "CC=$(CC)" >>config.log
+	echo SYSTEM=config/Makefile.$(SYSTEM) SYSTEM.SUPPORTED=$(SYSTEM.SUPPORTED) >>config.log
+	echo "]" >>config.log
 
 glew.lib: glew.lib.shared glew.lib.static
 

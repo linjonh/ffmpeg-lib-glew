@@ -171,7 +171,7 @@ sub output_tokens($$)
         } keys %{$tbl};
         print "\n";
     } else {
-        print STDERR "no keys in table!\n";
+        # print STDERR "no keys in table!\n";
     }
 }
 

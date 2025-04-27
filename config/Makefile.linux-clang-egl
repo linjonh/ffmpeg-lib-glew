@@ -1,5 +1,5 @@
 include config/Makefile.linux-clang
 
 LDFLAGS.GL = -lEGL -lGL # for linux desktop
-#LDFLAGS.GL =-L$NDK/platforms/android-24/arch-arm64/usr/lib -lEGL -lGLESv2 # for arm64
+#LDFLAGS.GL = -lEGL -lGLESv2 # for arm64
 CFLAGS.EXTRA += -DGLEW_EGL

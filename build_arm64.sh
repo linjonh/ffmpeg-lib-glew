@@ -1,4 +1,3 @@
-
 function buildGlew() {
     if [ $1 ] ; then
         export NDK=/home/linj/Android/Sdk/ndk/26.1.10909125
@@ -18,8 +17,8 @@ function buildGlew() {
     # export CXX=$TOOLCHAIN/bin/$TARGET$API-clang++
     
     PREFIX=$5
-    cc=$6
-    cxx=$7
+    FFCC=$6
+    FFCXX=$7
     i=0
     for param in "$@";
     do
@@ -27,10 +26,22 @@ function buildGlew() {
         let i++ 
     done
     # cd glew
-    # ${MAKE_EXECUTABLE} testDir GLEW_PREFIX=$PREFIX GLEW_DEST=$PREFIX CC=$CC LD=$CXX
+    # ${MAKE_EXECUTABLE} testDir GLEW_PREFIX=$PREFIX GLEW_DEST=$PREFIX CC=$FFCC LD=$FFCXX
+
+    #编译auto目录下的
+    cd auto
+    echo ">>>>  ${MAKE_EXECUTABLE}"completed build for
+    ${MAKE_EXECUTABLE} clean && ${MAKE_EXECUTABLE} -j$(nproc)
+
+    #glew目录下编译
+    system_config=linux-clang-egl-android
+    echo ">>>> cd ../"
+    cd ../ && pwd
     ${MAKE_EXECUTABLE} clean
-    ${MAKE_EXECUTABLE} SYSTEM=linux-clang-egl GLEW_PREFIX=$PREFIX GLEW_DEST=$PREFIX CC=$CC LD=$CXX
-    ${MAKE_EXECUTABLE} install GLEW_PREFIX=$PREFIX GLEW_DEST=$PREFIX
+    echo ">>>> ${MAKE_EXECUTABLE} SYSTEM=${system_config} GLEW_PREFIX=$PREFIX GLEW_DEST=$PREFIX CC=$FFCC LD=$FFCXX" -j$(nproc)
+    ${MAKE_EXECUTABLE} SYSTEM=${system_config} GLEW_PREFIX=$PREFIX GLEW_DEST=$PREFIX CC=$FFCC LD=$FFCXX -j$(nproc)
+    echo ">>>> ${MAKE_EXECUTABLE} install GLEW_PREFIX=$PREFIX GLEW_DEST=$PREFIX" CC=$FFCC LD=$FFCXX -j$(nproc)
+    ${MAKE_EXECUTABLE} install GLEW_PREFIX=$PREFIX GLEW_DEST=$PREFIX CC=$FFCC LD=$FFCXX -j$(nproc)
 
 }
 

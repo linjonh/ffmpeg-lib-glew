@@ -1,0 +1,5 @@
+include config/Makefile.linux-clang
+
+#LDFLAGS.GL = -lEGL -lGL # for linux desktop
+LDFLAGS.GL = -lEGL -lGLESv2 # for arm64
+CFLAGS.EXTRA += -DGLEW_EGL
