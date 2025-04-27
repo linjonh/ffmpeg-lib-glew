@@ -34,7 +34,7 @@ SHELL = /bin/sh
  
 # include config/Makefile.$(SYSTEM)
 #外部设置SYSTEM的config平台，此处config.guess 猜测的对于glew类库不支持  library -lX11 和 library -lGL
-SYSTEM ?= linux-clang-egl #$(shell config/config.guess | cut -d - -f 3 | sed -e 's/[0-9\.]//g;')
+SYSTEM ?=linux #$(shell config/config.guess | cut -d - -f 3 | sed -e 's/[0-9\.]//g;')
 SYSTEM.SUPPORTED = $(shell test -f config/Makefile.$(SYSTEM) && echo 1)
 ifeq ($(SYSTEM.SUPPORTED), 1)
 include config/Makefile.$(SYSTEM)
@@ -103,15 +103,15 @@ LIB.OBJS           := $(LIB.OBJS:.c=.o)
 LIB.SOBJS          := $(addprefix tmp/$(SYSTEM)/default/shared/,$(LIB.SRCS.NAMES))
 LIB.SOBJS          := $(LIB.SOBJS:.c=.o)
 testDir:
-	echo "[" >>config.log
-	echo "install path GLEW_PREFIX=$(GLEW_PREFIX)" >>config.log
-	echo "GLEW_DEST=$(GLEW_DEST)  " >>config.log
-	echo "LIB.SHARED.DIR/LIB.SHARED=$(LIB.SHARED.DIR)/$(LIB.SHARED)" >>config.log
-	echo "LIB.LDFLAGS=$(LIB.LDFLAGS) LDFLAGS.GL= LIB.LIBS=GL_LDFLAGS=$(GL_LDFLAGS)" >>config.log
-	echo "GLEW_NO_GLU=$(GLEW_NO_GLU)" >>config.log
-	echo "CC=$(CC)" >>config.log
-	echo SYSTEM=config/Makefile.$(SYSTEM) SYSTEM.SUPPORTED=$(SYSTEM.SUPPORTED) >>config.log
-	echo "]" >>config.log
+	@echo "[" >>config.log
+	@echo "install path GLEW_PREFIX=$(GLEW_PREFIX)" >>config.log
+	@echo "GLEW_DEST=$(GLEW_DEST)  " >>config.log
+	@echo "LIB.SHARED.DIR/LIB.SHARED=$(LIB.SHARED.DIR)/$(LIB.SHARED)" >>config.log
+	@echo "LIB.LDFLAGS=$(LIB.LDFLAGS) LDFLAGS.GL= LIB.LIBS=GL_LDFLAGS=$(GL_LDFLAGS)" >>config.log
+	@echo "GLEW_NO_GLU=$(GLEW_NO_GLU)" >>config.log
+	@echo "CC=$(CC)" >>config.log
+	@echo SYSTEM=config/Makefile.$(SYSTEM) SYSTEM.SUPPORTED=$(SYSTEM.SUPPORTED) >>config.log
+	@echo "]" >>config.log
 
 glew.lib: glew.lib.shared glew.lib.static
 
